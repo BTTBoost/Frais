@@ -1,14 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./css/index.css";
+import "./css/App.css";
+import "./css/hero.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { ChakraProvider } from "@chakra-ui/react";
+import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
+
+const activeChainId = ChainId.Mumbai;
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThirdwebProvider desiredChainId={activeChainId}>
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
+    </ThirdwebProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
