@@ -1,0 +1,3 @@
+export const HARDHAT_NETWORK_ID = '31337';
+export const RINKEBY_NETWORK_ID = '4'
+export const FACTORY_ADDRESS = '0x07dC06DCBBdabfE2476D41d6a3Dfe27Db76fF5bc';

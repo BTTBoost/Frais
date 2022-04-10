@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Raleway:wght@400;500;600;700&&family=Source+Code+Pro&family=Montserrat&display=swap");
+
+@font-face {
+  font-family: "Digital";
+  src: url(./assets/fonts/Digital\ Dismay.otf);
+}
+@font-face {
+  font-family: "PressStart2P";
+  src: url(./assets/fonts/PressStart2P.ttf);
+}
+@font-face {
+  font-family: "Valorant";
+  src: url(./assets/fonts/Valorant\ Font.ttf);
+}
+@font-face {
+  font-family: "Aquire";
+  src: url(./assets/fonts/Aquire.otf);
+}
+@font-face {
+  font-family: "Aquire-Bold";
+  src: url(./assets/fonts/Aquire-Bold.otf);
+}
+
+body {
+  /* background: '#88498F' !important; */
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  height: 100%;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: rgb(0, 0, 0);
+}
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 10px;
+  color: rgb(0, 0, 0);
+}
+
+.address-box {
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(3.5px);
+  -webkit-backdrop-filter: blur(3.5px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: white ;
+}
+.address-box button{
+  color: black;
+  background: rgba(255,255,255,0.6);
+}

@@ -17,11 +17,5 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  solidity: "0.8.10",
-  networks: {
-    mumbai: {
-      url: process.env.REACT_APP_ALCHEMY_API_URL,
-      accounts: [`0x${process.env.REACT_APP_PRIVATE_KEY}`],
-    },
-  },
+  solidity: "0.8.4",
 };
