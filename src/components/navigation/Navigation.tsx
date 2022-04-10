@@ -59,7 +59,10 @@ const Nav: React.FC<NavProps> = ({
 
   return (
     <>
-      <Box px={4}>
+      <Box px={4} top="0" bg="transparent" zIndex="999">
+        <Box position="relative">
+
+        
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <Stack
             onClick={navigateToHomepage} 
@@ -73,7 +76,7 @@ const Nav: React.FC<NavProps> = ({
               background: 'secondary'
             }}>
             <GiSpellBook color='white' fill='white' size={20}/>
-            <Box color='white'>AcademyONE</Box>
+            <Box color='white'>Frais</Box>
           </Stack>
           <Flex alignItems={'center'}>
             <NavLink path={'/courses'}>Courses</NavLink>
@@ -112,6 +115,7 @@ const Nav: React.FC<NavProps> = ({
             </Stack>
           </Flex>
         </Flex>
+        </Box>
       </Box>
     </>
   );

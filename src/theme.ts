@@ -12,14 +12,14 @@ const theme = extendTheme({
         heading: 'Space Grotesk',
     },
     colors: {
-        primary: '#EF6461',
+        primary: '#111',
         secondary: 'rgb(23,22,145)',
         tertiary: '#807eff',
     },
     styles: {
         global: {
             'html, body': {
-                background: '#EF6461',
+                background: '#111',
                 'min-height': '100vh',
                 'font-family': 'Space Grotesk',
                 transition: 'all 300ms',

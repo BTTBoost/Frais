@@ -12,15 +12,18 @@ import {
 import Hero from "./Hero";
 import Address from "../../ui/Address";
 import Web3modal from "../../ui/Web3modal";
+import { useNavigate } from "react-router";
+import Navigation from "../../navigation/Navigation";
 
 function Home() {
+  const navigate = useNavigate();
   useEffect(() => {
     // console.log(connect[0].data.connected);
     document.addEventListener("mousemove", parallax);
   }, []);
 
   function parallax(e) {
-    document.querySelectorAll(".px-move").forEach(function(move) {
+    document.querySelectorAll(".px-move").forEach(function (move) {
       let moving_value = move.getAttribute("data-value");
       let x = (e.clientX * moving_value) / 100;
       let y = (e.clientY * moving_value) / 100;
@@ -32,10 +35,10 @@ function Home() {
     <>
       <Box zIndex="22" w="100%" className="hero-box" h="100vh">
         {/* <Web3modal onClose={onClose} isOpen={isOpen} /> */}
-        <Heading position="absolute" top="3%" left="2%" color="whitesmoke">
+        {/* <Heading position="absolute" top="3%" left="2%" color="whitesmoke">
           Frais
-        </Heading>
-        <Address />
+        </Heading> */}
+        {/* <Address /> */}
         <div className="stripes-bg">
           <div className="stripes-bg__item stripes-1 px-move" data-value="-4">
             <svg
@@ -81,8 +84,9 @@ function Home() {
               _hover={{ bg: "transparent" }}
               className="hero-btn"
               // onClick={onOpen}
+              onClick={() => navigate("/courses")}
             >
-              Connect Wallet
+              Get Started
               <svg className="button-stroke" viewBox="0 0 154 13">
                 <use href="#line" />
               </svg>

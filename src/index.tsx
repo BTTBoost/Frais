@@ -8,7 +8,7 @@ import './index.css';
 import "./hero.css";
 import Dapp from './components/Dapp';
 
-const activeChainId = ChainId.Mumbai;
+const activeChainId = ChainId.Rinkeby;
 
 ReactDOM.render(
   <ThirdwebProvider desiredChainId={activeChainId}>

@@ -123,10 +123,10 @@ const Dapp: React.FC = () => {
     <ProviderProvider value={provider}>
       <SignerProvider value={signer}>
           <AddressProvider value={selectedAddress}>
-                {/* <Navigation connectWallet={connectWallet}/> */}
+                <Navigation connectWallet={connectWallet}/>
                 <Box pb={'300px'}>
                   <Routes>
-                    <Route path='/' element={<Home/>}/>
+                    <Route path='/' element={<Home />}/>
                     <Route path='/courses/:courseAddress' element={<Course/>}/>
                     <Route path='/courses/:courseAddress/newrequest' element={<CreateRequest/>}/>
                     <Route path='/courses/:courseAddress/requests/:requestIndex' element={<Request/>}/>
