@@ -107,7 +107,7 @@
   .hero-center-text {
     line-height: 5rem;
     width: 90%;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     position: relative;

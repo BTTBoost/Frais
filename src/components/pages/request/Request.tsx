@@ -124,7 +124,7 @@ const Request: React.FC = () => {
                 <Heading fontSize={25}>Modules</Heading>
                 {request.map((module) => <ModuleView module={module}/>)}
             </>
-            : <Center><Spinner size='xl'/></Center>}
+            : <Center><Spinner color="white" size='xl'/></Center>}
     </Container>
 };
 

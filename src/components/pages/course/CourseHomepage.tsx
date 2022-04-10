@@ -209,7 +209,7 @@ const CourseHomepage: React.FC = () => {
         </Flex>
         <hr/>
         {requestsAreLoading
-         ? <Center><Spinner size={'xl'}/></Center>
+         ? <Center><Spinner color="white" size={'xl'}/></Center>
         : requests.map((request) => <RequestPreview key={`req-${request.index}`} request={request}/>)}
     </Container>
 }

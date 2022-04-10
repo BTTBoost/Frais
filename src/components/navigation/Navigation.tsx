@@ -26,6 +26,7 @@ import styles from './Navigation.module.sass';
 
 const NavLink = ({ children, path }: { children: React.ReactNode, path: string }) => {
   const navigate = useNavigate(); 
+
   return   <Link
       color='white'
       px={2}
@@ -63,7 +64,7 @@ const Nav: React.FC<NavProps> = ({
         <Box position="relative">
 
         
-        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+        <Flex h={16} alignItems={'center'} bg="transparent" justifyContent={'space-between'}>
           <Stack
             onClick={navigateToHomepage} 
             direction={'row'}
@@ -78,11 +79,6 @@ const Nav: React.FC<NavProps> = ({
             <GiSpellBook color='white' fill='white' size={20}/>
             <Box color='white'>Frais</Box>
           </Stack>
-          <Flex alignItems={'center'}>
-            <NavLink path={'/courses'}>Courses</NavLink>
-            {/* <NavLink path={'/about'}>About</NavLink> */}
-            {address && <NavLink path={'/create'}>Create Course</NavLink>}
-          </Flex>
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>

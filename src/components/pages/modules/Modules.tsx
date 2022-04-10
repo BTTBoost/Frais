@@ -67,7 +67,7 @@ const Module: React.FC = () => {
         </Flex>
         {(modules && !isLoading)
             ? <ModuleView module={modules[selectedModule]}/>
-            : <Center><Spinner size='xl'/></Center>}
+            : <Center><Spinner color="white"  size='xl'/></Center>}
     </Container>
 }
 

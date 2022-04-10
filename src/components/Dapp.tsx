@@ -3,6 +3,7 @@ import { ethers } from 'ethers';
 import { Routes, Route } from 'react-router';
 import {
   Box,
+  useToast
 } from '@chakra-ui/react';
 import { RINKEBY_NETWORK_ID, HARDHAT_NETWORK_ID } from '../constants/chain';
 import { AddressProvider } from '../context/Address';
@@ -20,10 +21,18 @@ import { CustomWindow } from '../types';
 import CreateRequest from './pages/createRequest/CreateRequest';
 import FourOhFour from './pages/404/404';
 import Roadmap from './pages/roadmap/Roadmap';
+import MintNft from './ui/MintNft';
+import {
+  useAddress,
+  useMetamask,
+  useEditionDrop,
+  useToken,
+} from "@thirdweb-dev/react";
 
 declare let window: CustomWindow;
 
 const Dapp: React.FC = () => {
+  const toast = useToast();
   const [selectedAddress, setSelectedAddress] = React.useState<string>();
   const [balance, setBalance] = React.useState<number>();
   const [txBeingSent, setTxBeingSent] = React.useState();
@@ -31,6 +40,141 @@ const Dapp: React.FC = () => {
   const [networkError, setNetworkError] = React.useState<string>();
   const [provider, setProvider] = React.useState<ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider>();
   const [signer, setSigner] = React.useState<ethers.Signer>();
+
+  // Use the hooks thirdweb give us.
+  const address = useAddress();
+  const connectWithMetamask = useMetamask();
+  console.log("👋 Address:", address);
+
+  // Initialize our editionDrop contract
+  const editionDrop = useEditionDrop(
+    "0x11E81250D7b3cfE533b1ddFcFf308b43BFC69e12"
+  );
+  const token = useToken("0x2B10F2f8c8049304bad37883313f46b5fd8c7d5A");
+  // State variable for us to know if user has our NFT.
+  const [hasClaimedNFT, setHasClaimedNFT] = React.useState<boolean>(false);
+  // isClaiming lets us easily keep a loading state while the NFT is minting.
+  const [isClaiming, setIsClaiming] = React.useState<boolean>(false);
+  const [checker, setChecker] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
+  const [memberTokenAmounts, setMemberTokenAmounts] = React.useState<string[]>([]);
+  // The array holding all of our members addresses.
+  const [memberAddresses, setMemberAddresses] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    // If they don't have an connected wallet, exit!
+    
+    const checkBalance = async () => {
+      try {
+        const balance = await editionDrop?.balanceOf(address || "", 0);
+        if (balance?.gt(0)) {
+          setHasClaimedNFT(true);
+          console.log("🌟 this user has a membership NFT!");
+        } else {
+          setHasClaimedNFT(false);
+          console.log("😭 this user doesn't have a membership NFT.");
+        }
+      } catch (error) {
+        setHasClaimedNFT(false);
+        console.error("Failed to get balance", error);
+      }
+    };
+    checkBalance();
+  }, [address, editionDrop]);
+
+  React.useEffect(() => {
+    success &&
+      toast({
+        title: "NFT Minted",
+        status: "success",
+        position: "top",
+        duration: 9000,
+        isClosable: true,
+      });
+    checker &&
+      toast({
+        title: "Please Wait!",
+        description: "Minting your FraisDAO Nft...",
+        status: "info",
+        position: "top",
+        duration: 5000,
+        isClosable: true,
+      });
+  }, [success, checker]);
+
+  React.useEffect(() => {
+    if (!hasClaimedNFT) {
+      return;
+    }
+
+    // Just like we did in the 7-airdrop-token.js file! Grab the users who hold our NFT
+    // with tokenId 0.
+    const getAllAddresses = async () => {
+      try {
+        const memberAddresses =
+          await editionDrop?.history.getAllClaimerAddresses(0);
+        setMemberAddresses(memberAddresses || []);
+        console.log("🚀 Members addresses", memberAddresses);
+      } catch (error) {
+        console.error("failed to get member list", error);
+      }
+    };
+    getAllAddresses();
+  }, [hasClaimedNFT, editionDrop?.history]);
+
+  // This useEffect grabs the # of token each member holds.
+  React.useEffect(() => {
+    if (!hasClaimedNFT) {
+      return;
+    }
+
+    const getAllBalances = async () => {
+      try {
+        const amounts : any = await token?.history.getAllHolderBalances();
+        setMemberTokenAmounts(amounts || []);
+        console.log("👜 Amounts", amounts);
+      } catch (error) {
+        console.error("failed to get member balances", error);
+      }
+    };
+    getAllBalances();
+  }, [hasClaimedNFT, token?.history]);
+
+  // Now, we combine the memberAddresses and memberTokenAmounts into a single array
+  const memberList = React.useMemo(() => {
+    return memberAddresses.map((address) => {
+      // We're checking if we are finding the address in the memberTokenAmounts array.
+      // If we are, we'll return the amount of token the user has.
+      // Otherwise, return 0.
+      const member : any = memberTokenAmounts?.find(
+        (holder) => holder === address
+      );
+
+      return {
+        address,
+        tokenAmount: member?.balance.displayValue || "0",
+      };
+    });
+  }, [memberAddresses, memberTokenAmounts]);
+
+  const mintNft = async () => {
+    try {
+      setChecker(true);
+      setIsClaiming(true);
+      await editionDrop?.claim("0", 1);
+      console.log(
+        `🌊 Successfully Minted! Check it out on OpenSea: https://testnets.opensea.io/assets/${editionDrop?.getAddress()}/0`
+      );
+      setHasClaimedNFT(true);
+      setSuccess(true);
+    } catch (error) {
+      setHasClaimedNFT(false);
+      console.error("Failed to mint NFT", error);
+    } finally {
+      setIsClaiming(false);
+    }
+  };
+
 
   const resetState = () => {
     console.log('resetting state');
@@ -110,6 +254,7 @@ const Dapp: React.FC = () => {
   }
 
   React.useEffect(() => {
+    console.log(hasClaimedNFT);
     if (selectedAddress) {
       initializeEthers();
     }
@@ -123,10 +268,10 @@ const Dapp: React.FC = () => {
     <ProviderProvider value={provider}>
       <SignerProvider value={signer}>
           <AddressProvider value={selectedAddress}>
-                <Navigation connectWallet={connectWallet}/>
+             <Navigation connectWallet={connectWallet}/>
                 <Box pb={'300px'}>
                   <Routes>
-                    <Route path='/' element={<Home />}/>
+                    <Route path='/' element={<Home hasClaimedNFT={hasClaimedNFT} memberAddresses={memberAddresses} mintNft={mintNft} />}/>
                     <Route path='/courses/:courseAddress' element={<Course/>}/>
                     <Route path='/courses/:courseAddress/newrequest' element={<CreateRequest/>}/>
                     <Route path='/courses/:courseAddress/requests/:requestIndex' element={<Request/>}/>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@chakra-ui/react';
 import { FaWallet } from 'react-icons/fa';
+import { useMetamask } from '@thirdweb-dev/react';
 
 interface ConnectWalletProps {
   connectWallet: () => void;
@@ -9,7 +10,8 @@ interface ConnectWalletProps {
 const ConnectWallet: React.FC<ConnectWalletProps> = ({
   connectWallet,
 }: ConnectWalletProps) => {
-  return <Button rightIcon={<FaWallet/>} onClick={connectWallet}>Connect Wallet</Button> 
+  const connectWithMetamask = useMetamask();
+  return <Button rightIcon={<FaWallet/>} onClick={async()=>{await connectWithMetamask();await connectWallet();}}>Connect Wallet</Button> 
 } 
 
 export default ConnectWallet;

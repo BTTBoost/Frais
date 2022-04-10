@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
+import { InitSwAuth } from '@skill-wallet/auth';
 import theme from './theme';
 import './index.css';
 import "./hero.css";

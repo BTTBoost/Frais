@@ -8,19 +8,35 @@ import {
   Image,
   Grid,
   useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import Hero from "./Hero";
 import Address from "../../ui/Address";
 import Web3modal from "../../ui/Web3modal";
 import { useNavigate } from "react-router";
 import Navigation from "../../navigation/Navigation";
+import { useAddress } from "../../../context/Address";
 
-function Home() {
+function Home({ hasClaimedNFT, mintNft, memberAddresses }) {
+  const address = useAddress();
   const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => {
     // console.log(connect[0].data.connected);
     document.addEventListener("mousemove", parallax);
   }, []);
+
+  const isWalletConnected = !!address;
+
+  const shortenAddress = (str) => {
+    return str && str.substring(0, 6) + "..." + str.substring(str.length - 4);
+  };
 
   function parallax(e) {
     document.querySelectorAll(".px-move").forEach(function (move) {
@@ -71,11 +87,72 @@ function Home() {
         <Box className="hero-center-text">
           <Box className="px-move" data-value="1" align="center">
             <Text fontWeight="400">
-              a <span className="hero-span">creative</span> platform to learn
-              yield farming
+              a <span className="hero-span">creative</span> platform allowing
+              incentives for the creation of high-quality learning materials
             </Text>
             {/* {!connect[0].data.connected ? ( */}
-            <Button
+            {isWalletConnected ? (
+              hasClaimedNFT ? (
+                <Flex justifyContent={"center"}>
+                  <Button
+                    fontSize="0.8vw"
+                    mt="4rem"
+                    fontWeight="400"
+                    color="white"
+                    bg="transparent"
+                    _hover={{ bg: "transparent" }}
+                    className="hero-btn"
+                    textDecoration={"underline"}
+                    onClick={() => navigate("/courses")}
+                  >
+                    Courses
+                  </Button>
+                  <Button
+                    fontSize="0.8vw"
+                    mt="4rem"
+                    fontWeight="400"
+                    color="white"
+                    bg="transparent"
+                    _hover={{ bg: "transparent" }}
+                    className="hero-btn"
+                    textDecoration={"underline"}
+                    onClick={() => navigate("/create")}
+                  >
+                    Create Course
+                  </Button>
+                  <Button
+                    fontSize="0.8vw"
+                    mt="4rem"
+                    fontWeight="400"
+                    color="white"
+                    bg="transparent"
+                    _hover={{ bg: "transparent" }}
+                    className="hero-btn"
+                    textDecoration={"underline"}
+                    onClick={onOpen}
+                  >
+                    Members
+                  </Button>
+                </Flex>
+              ) : (
+                <Button
+                  fontSize="0.8vw"
+                  mt="4rem"
+                  fontWeight="400"
+                  color="white"
+                  bg="transparent"
+                  _hover={{ bg: "transparent" }}
+                  className="hero-btn"
+                  textDecoration={"underline"}
+                  onClick={() => mintNft()}
+                >
+                  Mint Free FraisDAO Membership NFT
+                </Button>
+              )
+            ) : null}
+
+            {/* <Button>Mint Free FraisDAO Membership NFT</Button> */}
+            {/* <Button
               fontSize="0.8vw"
               mt="4rem"
               fontWeight="400"
@@ -84,7 +161,7 @@ function Home() {
               _hover={{ bg: "transparent" }}
               className="hero-btn"
               // onClick={onOpen}
-              onClick={() => navigate("/courses")}
+              onClick={() => (hasClaimedNFT ? navigate("/courses") : null)}
             >
               Get Started
               <svg className="button-stroke" viewBox="0 0 154 13">
@@ -93,7 +170,7 @@ function Home() {
               <svg className="button-stroke" viewBox="0 0 154 13">
                 <use href="#line" />
               </svg>
-            </Button>
+            </Button> */}
             {/* ) : (
               <Button
                 fontSize="0.8vw"
@@ -119,6 +196,28 @@ function Home() {
           </Box>
         </Box>
       </Box>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>FraisDAO Members List</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <table className="card">
+              <thead>
+                <tr style={{ textAlign: "left", marginBottom: "10px" }}>
+                  <th>Addresses</th>
+                </tr>
+              </thead>
+              <tbody style={{ textAlign: "left", marginTop: "20px" }}>
+                {memberAddresses.map((list, index) => {
+                  return <tr key={index}>{list}</tr>;
+                })}
+              </tbody>
+            </table>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
 
       {/* <Box bg="#111" pt="2rem" className="hero-box" h="100vh">
         <div class="menu-main__path menu-main__path--1 px-move" data-value="-3">

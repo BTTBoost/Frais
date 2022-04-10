@@ -218,7 +218,7 @@ const CreateRequest: React.FC = () => {
                 </Select>
             </Stack>
             {isLoading
-                ? <Center minHeight={'calc(100vh - 200px)'}><Spinner size={'xl'}/></Center>
+                ? <Center minHeight={'calc(100vh - 200px)'}><Spinner color="white"  size={'xl'}/></Center>
                 : <>
                     <FormLabel>PR Title</FormLabel>
                     <Input color='black'bg={'white'} mb={5} value={title} onChange={onChangeTitleHandler}/>
